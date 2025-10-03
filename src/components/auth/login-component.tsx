@@ -25,6 +25,8 @@ import {
   CardHeader,
   CardTitle,
 } from "../atoms/card";
+import { authClient } from "@/lib/auth-client";
+import { Spinner } from "../atoms/spinner";
 
 const LoginComponent = () => {
   const router = useRouter();
@@ -40,6 +42,11 @@ const LoginComponent = () => {
 
   const onSubmit = async (data: LoginSchemaType) => {
     console.log(data);
+    const res = await authClient.signIn.email({
+      email: data.email,
+      password: data.password,
+    });
+    console.log(res);
   };
   return (
     <div>
@@ -106,7 +113,15 @@ const LoginComponent = () => {
               />
             </CardContent>
             <CardFooter className="pt-2">
-              <Button type="submit">Save changes</Button>
+              <Button disabled={loginForm.formState.isSubmitting} type="submit">
+                {loginForm.formState.isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    Authenticating <Spinner />
+                  </div>
+                ) : (
+                  <div>Login</div>
+                )}
+              </Button>
             </CardFooter>
           </form>
         </Form>
