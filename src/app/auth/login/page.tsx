@@ -1,16 +1,3 @@
-import { AppWindowIcon, CodeIcon } from "lucide-react";
-
-import { Button } from "@/components/atoms/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/atoms/card";
-import { Input } from "@/components/atoms/input";
-import { Label } from "@/components/atoms/label";
 import {
   Tabs,
   TabsContent,
