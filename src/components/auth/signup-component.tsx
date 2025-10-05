@@ -26,6 +26,7 @@ import {
   CardTitle,
 } from "../atoms/card";
 import { Spinner } from "../atoms/spinner";
+import { authClient } from "@/lib/auth-client";
 
 const SignupComponent = () => {
   const router = useRouter();
@@ -42,7 +43,12 @@ const SignupComponent = () => {
 
   const onSubmit = async (data: SignupSchemaType) => {
     console.log(data);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const res = await authClient.signUp.email({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    });
+    console.log(res);
     toast.success("Account created successfully!");
   };
   return (
