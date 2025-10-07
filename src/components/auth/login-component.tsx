@@ -41,12 +41,21 @@ const LoginComponent = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data: LoginSchemaType) => {
-    console.log(data);
-    const res = await authClient.signIn.email({
-      email: data.email,
-      password: data.password,
-    });
-    console.log(res);
+    await authClient.signIn.email(
+      {
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Login successful!");
+          router.push("/");
+        },
+        onError: (res) => {
+          toast.error(res.error?.message);
+        },
+      }
+    );
   };
   return (
     <div>

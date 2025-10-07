@@ -43,13 +43,21 @@ const SignupComponent = () => {
 
   const onSubmit = async (data: SignupSchemaType) => {
     console.log(data);
-    const res = await authClient.signUp.email({
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
-    console.log(res);
-    toast.success("Account created successfully!");
+    await authClient.signUp.email(
+      {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Account created successfully!");
+        },
+        onError: (res) => {
+          toast.error(res.error?.message);
+        },
+      }
+    );
   };
   return (
     <div>
