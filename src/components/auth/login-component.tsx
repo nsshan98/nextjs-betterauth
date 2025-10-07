@@ -49,7 +49,7 @@ const LoginComponent = () => {
       {
         onSuccess: () => {
           toast.success("Login successful!");
-          router.push("/");
+          router.push("/dashboard");
         },
         onError: (res) => {
           toast.error(res.error?.message);
