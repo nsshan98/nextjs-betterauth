@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/atoms/button";
 import { Separator } from "@/components/atoms/separator";
 import { authClient } from "@/lib/auth-client";
