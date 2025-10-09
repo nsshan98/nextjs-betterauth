@@ -44,7 +44,29 @@ const authHandlers = toNextJsHandler(auth);
 export const { GET } = authHandlers;
 
 export async function POST(request: Request) {
-  return authHandlers.POST(request);
+  const clonedRequest = request.clone();
+  const desicion = await checkArcjet(request);
+
+  if (desicion.isDenied()) {
+    if (desicion.reason.isRateLimit()) {
+      return new Response(null, { status: 429 });
+    } else if (desicion.reason.isEmail()) {
+      let message: string;
+      if (desicion.reason.emailTypes.includes("DISPOSABLE")) {
+        message = "Disposable email addresses are not allowed.";
+      } else if (desicion.reason.emailTypes.includes("FREE")) {
+        message = "Free email providers are not allowed.";
+      } else if (desicion.reason.emailTypes.includes("NO_MX_RECORDS")) {
+        message = "Email domain is not valid.";
+      } else {
+        message = "Email address is not allowed.";
+      }
+      return Response.json({ message }, { status: 400 });
+    } else {
+      return new Response(null, { status: 403 });
+    }
+  }
+  return authHandlers.POST(clonedRequest);
 }
 
 async function checkArcjet(request: Request) {
@@ -54,7 +76,7 @@ async function checkArcjet(request: Request) {
   });
   const userIdOrIp = (session?.user?.id ?? findIp(request)) || "127.0.0.1";
 
-  if (request.url.startsWith("/auth/signup")) {
+  if (request.url.startsWith("/auth/sign-up")) {
     if (
       body &&
       typeof body === "object" &&
