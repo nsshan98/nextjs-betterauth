@@ -2,8 +2,11 @@ import { auth } from "@/lib/auth";
 import { toNextJsHandler } from "better-auth/next-js";
 import arcjet, {
   BotOptions,
+  detectBot,
   EmailOptions,
+  protectSignup,
   shield,
+  slidingWindow,
   SlidingWindowRateLimitOptions,
 } from "@arcjet/next";
 import { findIp } from "@arcjet/ip";
@@ -25,7 +28,7 @@ const restrictiveRateLimitSettings = {
   interval: "10m",
 } satisfies SlidingWindowRateLimitOptions<[]>;
 
-const laxLimitSettings = {
+const laxRateLimitSettings = {
   mode: "LIVE",
   max: 60,
   interval: "1m",
@@ -50,4 +53,33 @@ async function checkArcjet(request: Request) {
     headers: request.headers,
   });
   const userIdOrIp = (session?.user?.id ?? findIp(request)) || "127.0.0.1";
+
+  if (request.url.startsWith("/auth/signup")) {
+    if (
+      body &&
+      typeof body === "object" &&
+      "email" in body &&
+      typeof body.email === "string"
+    ) {
+      return aj
+        .withRule(
+          protectSignup({
+            email: emailSettings,
+            bots: botSettings,
+            rateLimit: restrictiveRateLimitSettings,
+          })
+        )
+        .protect(request, { email: body.email, userIdOrIp });
+    } else {
+      return aj
+        .withRule(detectBot(botSettings))
+        .withRule(slidingWindow(restrictiveRateLimitSettings))
+        .protect(request, { userIdOrIp });
+    }
+  } else {
+    return aj
+      .withRule(detectBot(botSettings))
+      .withRule(slidingWindow(laxRateLimitSettings))
+      .protect(request, { userIdOrIp });
+  }
 }
