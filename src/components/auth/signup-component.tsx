@@ -27,6 +27,8 @@ import {
 } from "../atoms/card";
 import { Spinner } from "../atoms/spinner";
 import { authClient } from "@/lib/auth-client";
+import { Separator } from "../atoms/separator";
+import SocialAuthComponent from "./social-auth-component";
 
 const SignupComponent = () => {
   const router = useRouter();
@@ -158,6 +160,10 @@ const SignupComponent = () => {
             </CardFooter>
           </form>
         </Form>
+        <Separator />
+        <div className="grid grid-cols-4 gap-2 px-2">
+          <SocialAuthComponent />
+        </div>
       </Card>
     </div>
   );

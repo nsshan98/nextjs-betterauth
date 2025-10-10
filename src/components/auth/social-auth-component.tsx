@@ -1,45 +1,22 @@
+import {
+  SUPPORTED_OAUTH_PROVIDERS,
+  SUPPORTED_OAUTH_PROVIDERS_DETAILS,
+} from "@/lib/oauth-providers";
 import React from "react";
 import { FaGoogle, FaFacebook, FaGithub, FaDiscord } from "react-icons/fa";
+import { Button } from "../atoms/button";
 
 const SocialAuthComponent = () => {
-  return (
-    <div>
-      <div className="flex justify-center space-x-4">
-        <FaGoogle
-          size={50}
-          style={{
-            backgroundColor: "#b3e6c0ff",
-            padding: "10px",
-            borderRadius: "10px",
-          }}
-        />
-        <FaFacebook
-          size={50}
-          style={{
-            backgroundColor: "#b3e6c0ff",
-            padding: "10px",
-            borderRadius: "10px",
-          }}
-        />
-        <FaGithub
-          size={50}
-          style={{
-            backgroundColor: "#b3e6c0ff",
-            padding: "10px",
-            borderRadius: "10px",
-          }}
-        />
-        <FaDiscord
-          size={50}
-          style={{
-            backgroundColor: "#b3e6c0ff",
-            padding: "10px",
-            borderRadius: "10px",
-          }}
-        />
-      </div>
-    </div>
-  );
+  return SUPPORTED_OAUTH_PROVIDERS.map((provider) => {
+    const Icon = SUPPORTED_OAUTH_PROVIDERS_DETAILS[provider].Icon;
+
+    return (
+        <Button>
+          <Icon />
+          {SUPPORTED_OAUTH_PROVIDERS_DETAILS[provider].name}
+        </Button>
+    );
+  });
 };
 
 export default SocialAuthComponent;
