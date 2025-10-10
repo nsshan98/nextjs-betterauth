@@ -36,7 +36,7 @@ const laxRateLimitSettings = {
 
 const emailSettings = {
   mode: "LIVE",
-  block: ["DISPOSABLE", "FREE", "NO_MX_RECORDS"],
+  block: ["DISPOSABLE", "INVALID", "NO_MX_RECORDS"],
 } satisfies EmailOptions;
 
 const authHandlers = toNextJsHandler(auth);
@@ -54,8 +54,8 @@ export async function POST(request: Request) {
       let message: string;
       if (desicion.reason.emailTypes.includes("DISPOSABLE")) {
         message = "Disposable email addresses are not allowed.";
-      } else if (desicion.reason.emailTypes.includes("FREE")) {
-        message = "Free email providers are not allowed.";
+      } else if (desicion.reason.emailTypes.includes("INVALID")) {
+        message = "Email address is not valid.";
       } else if (desicion.reason.emailTypes.includes("NO_MX_RECORDS")) {
         message = "Email domain is not valid.";
       } else {

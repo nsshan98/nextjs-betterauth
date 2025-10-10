@@ -6,6 +6,7 @@ import {
 } from "@/components/atoms/tabs";
 import LoginComponent from "@/components/auth/login-component";
 import SignupComponent from "@/components/auth/signup-component";
+import SocialAuthComponent from "@/components/auth/social-auth-component";
 
 export default function Login() {
   return (
@@ -22,6 +23,9 @@ export default function Login() {
           <SignupComponent />
         </TabsContent>
       </Tabs>
+      <div className="mt-6">
+        <SocialAuthComponent />
+      </div>
     </div>
   );
 }
