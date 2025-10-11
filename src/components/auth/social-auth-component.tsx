@@ -1,3 +1,4 @@
+"use client";
 import {
   SUPPORTED_OAUTH_PROVIDERS,
   SUPPORTED_OAUTH_PROVIDERS_DETAILS,
@@ -5,16 +6,25 @@ import {
 import React from "react";
 import { FaGoogle, FaFacebook, FaGithub, FaDiscord } from "react-icons/fa";
 import { Button } from "../atoms/button";
+import { authClient } from "@/lib/auth-client";
 
 const SocialAuthComponent = () => {
   return SUPPORTED_OAUTH_PROVIDERS.map((provider) => {
     const Icon = SUPPORTED_OAUTH_PROVIDERS_DETAILS[provider].Icon;
 
     return (
-        <Button>
-          <Icon />
-          {SUPPORTED_OAUTH_PROVIDERS_DETAILS[provider].name}
-        </Button>
+      <Button
+        key={provider}
+        onClick={() => {
+          console.log(provider);
+          authClient.signIn.social({
+            provider: provider,
+          });
+        }}
+      >
+        <Icon />
+        {SUPPORTED_OAUTH_PROVIDERS_DETAILS[provider].name}
+      </Button>
     );
   });
 };
