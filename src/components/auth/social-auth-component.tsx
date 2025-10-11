@@ -4,7 +4,6 @@ import {
   SUPPORTED_OAUTH_PROVIDERS_DETAILS,
 } from "@/lib/oauth-providers";
 import React from "react";
-import { FaGoogle, FaFacebook, FaGithub, FaDiscord } from "react-icons/fa";
 import { Button } from "../atoms/button";
 import { authClient } from "@/lib/auth-client";
 
@@ -16,7 +15,6 @@ const SocialAuthComponent = () => {
       <Button
         key={provider}
         onClick={() => {
-          console.log(provider);
           authClient.signIn.social({
             provider: provider,
           });
